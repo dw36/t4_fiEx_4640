@@ -37,28 +37,15 @@ resource "digitalocean_vpc" "web_vpc" {
 
 
 # Create a bastion server
-# first droplets
 resource "digitalocean_droplet" "bastion_dp" {
   image    = var.rocky
   size     = var.rsize
-  name     = "application-A01232974"
-  tags   = [digitalocean_tag.do_tag.id]
-  region   = var.region
-  ssh_keys = [data.digitalocean_ssh_key.ssh_key.id]
-  vpc_uuid = digitalocean_vpc.web_vpc.id
-#}
-
-#second droplet
-#resource "digitalocean_droplet" "bastion_dp" {
-  image    = var.rocky
-  size     = var.rsize
-  name     = "frontend-A01232974"
+  name     = "bastion-${var.region}"
   tags   = [digitalocean_tag.do_tag.id]
   region   = var.region
   ssh_keys = [data.digitalocean_ssh_key.ssh_key.id]
   vpc_uuid = digitalocean_vpc.web_vpc.id
 }
-
 
 # firewall for bastion server
 resource "digitalocean_firewall" "bastion_firewall" {
@@ -94,7 +81,7 @@ resource "digitalocean_droplet" "web" {
   image    = var.rocky
   size     = var.rsize
   count    = var.droplet_count
-  name     = "web-${count.index + 1}"
+  name     = "application-A01232974"
   tags     = [digitalocean_tag.do_tag.id]
   region   = var.region
   ssh_keys = [data.digitalocean_ssh_key.ssh_key.id]
