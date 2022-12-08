@@ -91,6 +91,20 @@ resource "digitalocean_droplet" "web" {
   }
 }
 
+resource "digitalocean_droplet" "web2" {
+  image    = var.rocky
+  size     = var.rsize
+  count    = var.droplet_count
+  name     = "frontend-A01232974"
+  tags     = [digitalocean_tag.do_tag.id]
+  region   = var.region
+  ssh_keys = [data.digitalocean_ssh_key.ssh_key.id]
+  vpc_uuid = digitalocean_vpc.web_vpc.id
+  lifecycle {
+   create_before_destroy = true
+  }
+}
+
 resource "digitalocean_project_resources" "project_attach" {
   project = data.digitalocean_project.lab_project.id
   resources = flatten([ digitalocean_droplet.web.*.urn])
