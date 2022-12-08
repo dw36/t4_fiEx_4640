@@ -201,13 +201,13 @@ resource "digitalocean_firewall" "web_dp_firewall" {
     }
 
 }
-    output "server_ip" {
+    output "application_ip" {
   description = "application ip address:"  
   value = digitalocean_droplet.web.*.ipv4_address
  }
 
- output "server_ip" {
-  description = "application ip address:"  
+ output "frontend_ip" {
+  description = "frontend ip address:"  
   value = digitalocean_droplet.web2.*.ipv4_address
  }
 
