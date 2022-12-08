@@ -32,7 +32,7 @@ name = var.tag
 resource "digitalocean_vpc" "web_vpc" {
  name     = var.vpc
  region   = var.region
- #ip_range = 10.46.40.0/24
+ ip_range = "10.46.40.0/24"
 }
 
 
