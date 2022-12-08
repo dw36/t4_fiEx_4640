@@ -46,10 +46,10 @@ resource "digitalocean_droplet" "bastion_dp" {
   region   = var.region
   ssh_keys = [data.digitalocean_ssh_key.ssh_key.id]
   vpc_uuid = digitalocean_vpc.web_vpc.id
-}
+#}
 
 #second droplet
-resource "digitalocean_droplet" "bastion_dp" {
+#resource "digitalocean_droplet" "bastion_dp" {
   image    = var.rocky
   size     = var.rsize
   name     = "frontend-A01232974"
