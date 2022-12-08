@@ -1,0 +1,55 @@
+---
+- hosts: aws_ec2
+  tasks:
+    - name: installing software
+      become: true
+      apt:
+        name:
+          - nginx
+          - unzip
+          - acl
+    - name: adding backend user
+      become: true
+      user: 
+        name: backend
+    - name: download the code
+      get_url: 
+        url: https://github.com/timoguic/acit4640-py-mysql/archive/refs/heads/master.zip
+        dest: /tmp/source.zip
+    - name: create tmp directory for source code
+      file:
+       path: /tmp/code
+       state: directory
+    - name: unzip the code archive
+      unarchive:
+        src: /tmp/source.zip
+        dest: /tmp/code
+        remote_src: yes
+    - name: create a diretory for frontend files
+      become: true
+      file: 
+        path: /frontend
+        state: directory
+        owner: "{{ ansible_ssh_user }}"
+    - name : set up frontend files
+      copy: 
+        src: /tmp/code/acit4640-py-mysql-master/frontend/index.html
+        dest: /frontend/index.html
+        remote_src: yes
+    - name: copy nginx.conf to instance
+      become: true
+      copy:
+        src: nginx-default
+        dest: /etc/nginx/sites-available/default
+    - name: restart nginx after making changes
+      become: true
+      systemd:
+        name: nginx
+        state: restarted
+    - name: create a file as backend user
+      become: true
+      become_user: backend
+      file:
+         path: /tmp/example
+         state: touch
+          

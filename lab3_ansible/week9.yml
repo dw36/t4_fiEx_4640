@@ -1,0 +1,7 @@
+---
+- hosts: service_APP
+  tasks:
+    - name: import role video
+      import_role: 
+        name: video
+      
